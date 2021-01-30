@@ -660,8 +660,8 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   if (s->enable_osm == 1) {
     ui_draw_text(s->vg, text_x, text_y, "LimitSpeed", 26 * 2.0, color, s->font_sans_regular);
   } else {
-    ui_draw_text(s->vg, text_x, text_y, "Smart", 24 * 2.0, color, s->font_sans_regular);
-    ui_draw_text(s->vg, text_x, text_y+32, "Cruise", 24 * 2.0, color, s->font_sans_regular); 
+    ui_draw_text(s->vg, text_x, text_y-20, "Smart", 24 * 2.0, color, s->font_sans_regular);
+    ui_draw_text(s->vg, text_x, text_y+15, "Cruise", 24 * 2.0, color, s->font_sans_regular); 
   }
   // Draw Speed Text
   color = s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
