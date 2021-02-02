@@ -174,7 +174,7 @@ static void ui_draw_line(UIState *s, const vertex_data *v, const int cnt, NVGcol
 
 static void update_track_data(UIState *s, const cereal::ModelDataV2::XYZTData::Reader &line, track_vertices_data *pvd) {
   const UIScene *scene = &s->scene;
-  const float off = 1.2; //Narrow Track line 120%
+  const float off = 0.8; // Track line 80% compared to car
   int max_idx = 0;
   float lead_d;
   if (s->sm->updated("radarState")) {
@@ -206,7 +206,7 @@ static void ui_draw_track(UIState *s, bool is_mpc, track_vertices_data *pvd) {
   if (is_mpc) {
     // Draw colored MPC track Kegman's
     if (s->scene.steerOverride) {
-      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.35,
+      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
                                   COLOR_BLACK_ALPHA(200), COLOR_BLACK_ALPHA(50)); 
     } else {
         if (fabs(s->scene.output_scale) > 0.8) {
@@ -217,14 +217,14 @@ static void ui_draw_track(UIState *s, bool is_mpc, track_vertices_data *pvd) {
           red_lvl = 0;
           blue_lvl = 255;
         }
-        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.15,
+        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
                   nvgRGBA(          red_lvl,  200,             blue_lvl, 255),
-                  nvgRGBA((int)(0.9*red_lvl), 200, (int)(0.9* blue_lvl), 150));                  
+                  nvgRGBA((int)(0.9*red_lvl), 200, (int)(0.9* blue_lvl), 50));                  
     }
   } else {
     // Draw white vision track
     track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.1,
-      nvgRGBA(255, 255, 255, 150), nvgRGBA(255, 255, 255, 100));
+      nvgRGBA(255, 255, 255, 200), nvgRGBA(255, 255, 255, 50));
 
   }
   ui_draw_line(s, &pvd->v[0], pvd->cnt, nullptr, &track_bg);
