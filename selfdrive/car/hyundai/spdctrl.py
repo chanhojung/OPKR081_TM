@@ -310,7 +310,7 @@ class Spdctrl(SpdController):
         if self.cruise_gap != CS.cruiseGapSet:
             self.cruise_gap = CS.cruiseGapSet
 
-        str3 = 'MODE={:s}  VL={:03.0f}/{:03.0f}  TM={:03.0f}/{:03.0f}  TS={:03.0f}'.format( self.steer_mode, set_speed, CS.VSetDis, long_wait_cmd, self.long_curv_timer, int(round(self.target_speed)) )
+        str3 = 'VL={:03.0f}/{:03.0f}  TS={:03.0f}  TM={:03.0f}/{:03.0f}  MODE={:s}'.format(set_speed, CS.VSetDis, int(round(self.target_speed)), long_wait_cmd, self.long_curv_timer, self.steer_mode )
         str4 = '  RD=D:{:03.0f}/V:{:03.0f}  CG={:1.0f}  DG={:s}'.format(  CS.lead_distance, CS.lead_objspd, self.cruise_gap, self.seq_step_debug )
 
         str5 = str3 + str4
