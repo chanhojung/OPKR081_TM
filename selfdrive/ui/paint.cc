@@ -174,7 +174,7 @@ static void ui_draw_line(UIState *s, const vertex_data *v, const int cnt, NVGcol
 
 static void update_track_data(UIState *s, const cereal::ModelDataV2::XYZTData::Reader &line, track_vertices_data *pvd) {
   const UIScene *scene = &s->scene;
-  const float off = 0.2; //Narrow Track line 20%
+  const float off = 1.2; //Narrow Track line 120%
   int max_idx = 0;
   float lead_d;
   if (s->sm->updated("radarState")) {
