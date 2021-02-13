@@ -778,7 +778,7 @@ static void ui_draw_vision_event(UIState *s) {
       color = nvgRGBA(23, 51, 73, 255);
     }
 
-    if (s->safety_camera == 1) {
+    if (s->scene.limitSpeedCamera > 29) {
       const int img_x_size = 172*1.4;
       const int img_y_size = 271*1.4;
       const int img_x = s->scene.viz_rect.x + bdr_s + 450;
