@@ -661,10 +661,13 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   //const float text_y = viz_speedlim_y + (is_speedlim_valid ? 50 : 45);
   // Draw "Speed Limit" Text
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
+  //color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
   if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
-    ui_draw_text(s->vg, text_x, text_y, "LimitSpeed", 26 * 2.0, color, s->font_sans_bold);
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_RED;    
+    ui_draw_text(s->vg, text_x, text_y-20, "Limit", 24 * 2.0, color, s->font_sans_bold);
+    ui_draw_text(s->vg, text_x, text_y+15, "Speed", 24 * 2.0, color, s->font_sans_bold); 
   } else {
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;    
     ui_draw_text(s->vg, text_x, text_y-20, "Smart", 24 * 2.0, color, s->font_sans_bold);
     ui_draw_text(s->vg, text_x, text_y+15, "Cruise", 24 * 2.0, color, s->font_sans_bold); 
   }
