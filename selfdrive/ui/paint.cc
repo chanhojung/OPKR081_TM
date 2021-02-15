@@ -418,30 +418,30 @@ static void ui_draw_tpms(UIState *s) {
   if (s->scene.tpmsPressureFl < 34) {
     ui_draw_text(s->vg, pos_x-55, pos_y+50, tpmsFl, 60, COLOR_RED, s->font_sans_bold);
   } else if (s->scene.tpmsPressureFl > 50) {
-    ui_draw_text(s->vg, pos_x-55, pos_y+50, "N/A", 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x-55, pos_y+50, "N/A", 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   } else {
-    ui_draw_text(s->vg, pos_x-55, pos_y+50, tpmsFl, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x-55, pos_y+50, tpmsFl, 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   }
   if (s->scene.tpmsPressureFr < 34) {
     ui_draw_text(s->vg, pos_x+55, pos_y+50, tpmsFr, 60, COLOR_RED, s->font_sans_bold);
   } else if (s->scene.tpmsPressureFr > 50) {
-    ui_draw_text(s->vg, pos_x+55, pos_y+50, "N/A", 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x+55, pos_y+50, "N/A", 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   } else {
-    ui_draw_text(s->vg, pos_x+55, pos_y+50, tpmsFr, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x+55, pos_y+50, tpmsFr, 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   }
   if (s->scene.tpmsPressureRl < 34) {
     ui_draw_text(s->vg, pos_x-55, pos_y+100, tpmsRl, 60, COLOR_RED, s->font_sans_bold);
   } else if (s->scene.tpmsPressureRl > 50) {
-    ui_draw_text(s->vg, pos_x-55, pos_y+100, "N/A", 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x-55, pos_y+100, "N/A", 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   } else {
-    ui_draw_text(s->vg, pos_x-55, pos_y+100, tpmsRl, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x-55, pos_y+100, tpmsRl, 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   }
   if (s->scene.tpmsPressureRr < 34) {
     ui_draw_text(s->vg, pos_x+55, pos_y+100, tpmsRr, 60, COLOR_RED, s->font_sans_bold);
   } else if (s->scene.tpmsPressureRr > 50) {
-    ui_draw_text(s->vg, pos_x+55, pos_y+100, "N/A", 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x+55, pos_y+100, "N/A", 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   } else {
-    ui_draw_text(s->vg, pos_x+55, pos_y+100, tpmsRr, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, pos_x+55, pos_y+100, tpmsRr, 60, COLOR_WHITE_ALPHA(150), s->font_sans_semibold);
   }
 }
 
@@ -477,19 +477,20 @@ static void ui_draw_debug(UIState *s)
   int ui_viz_rx_center = scene.viz_rect.centerX();
   
   nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);
-
+  nvgFillColor(s->vg, COLOR_WHITE_ALPHA(200));
   if (s->nDebugUi1 == 1) {
-    ui_draw_text(s->vg, 0, 1035, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
-    ui_draw_text(s->vg, 0, 1078, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
+    nvgFontSize(s->vg, 35);
+    ui_draw_text(s->vg, 10, 1033, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
+    ui_draw_text(s->vg, 10, 1070, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
   }
 
   
-  nvgFillColor(s->vg, COLOR_WHITE_ALPHA(125));
   if (s->nDebugUi2 == 1) {
     //if (scene.gpsAccuracyUblox != 0.00) {
     //  nvgFontSize(s->vg, 34);
     //  ui_print(s, 28, 28, "LAT／LON: %.5f／%.5f", scene.latitudeUblox, scene.longitudeUblox);
     //}
+    nvgFillColor(s->vg, COLOR_WHITE_ALPHA(125));
     nvgFontSize(s->vg, 40);
     //ui_print(s, ui_viz_rx, ui_viz_ry, "Live Parameters");
     ui_print(s, ui_viz_rx, ui_viz_ry+250, "SR:%.2f", scene.liveParams.steerRatio);
@@ -500,7 +501,8 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "AD:%.2f", scene.pathPlan.steerActuatorDelay);
     ui_print(s, ui_viz_rx, ui_viz_ry+450, "SC:%.2f", scene.pathPlan.steerRateCost);
     ui_print(s, ui_viz_rx, ui_viz_ry+500, "OS:%.2f", abs(scene.output_scale));
-    nvgFontSize(s->vg, 40);
+    nvgFillColor(s->vg, COLOR_ORANGE_ALPHA(200));
+    nvgFontSize(s->vg, 50);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     if (s->lat_control == 0) {
       ui_print(s, ui_viz_rx_center, ui_viz_ry+310, "PID");
