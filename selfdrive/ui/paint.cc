@@ -662,7 +662,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   //const float text_y = viz_speedlim_y + (is_speedlim_valid ? 50 : 45);
   // Draw "Speed Limit" Text
-  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE); COLOR_
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE); 
   //color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
   if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
     color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_RED : COLOR_GREEN;    
