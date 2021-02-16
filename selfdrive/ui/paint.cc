@@ -479,9 +479,9 @@ static void ui_draw_debug(UIState *s)
   nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_BASELINE);
   nvgFillColor(s->vg, COLOR_WHITE_ALPHA(200));
   if (s->nDebugUi1 == 1) {
-    nvgFontSize(s->vg, 35);
-    ui_draw_text(s->vg, 10, 1033, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
-    ui_draw_text(s->vg, 10, 1070, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
+    nvgFontSize(s->vg, 30);
+    ui_draw_text(s->vg, 30, 1030, scene.alertTextMsg1.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
+    ui_draw_text(s->vg, 30, 1065, scene.alertTextMsg2.c_str(), 50, COLOR_WHITE_ALPHA(125), s->font_sans_semibold);
   }
 
   
@@ -662,14 +662,14 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   //const float text_y = viz_speedlim_y + (is_speedlim_valid ? 50 : 45);
   // Draw "Speed Limit" Text
-  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE); COLOR_
   //color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
   if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
-    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_RED;    
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_RED : COLOR_GREEN;    
     ui_draw_text(s->vg, text_x, text_y-20, "Limit", 24 * 2.0, color, s->font_sans_bold);
     ui_draw_text(s->vg, text_x, text_y+15, "Speed", 24 * 2.0, color, s->font_sans_bold); 
   } else {
-    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;    
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_OCHRE : COLOR_GREEN;    
     ui_draw_text(s->vg, text_x, text_y-20, "Smart", 24 * 2.0, color, s->font_sans_bold);
     ui_draw_text(s->vg, text_x, text_y+15, "Cruise", 24 * 2.0, color, s->font_sans_bold); 
   }
@@ -677,8 +677,13 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   color = s->is_ego_over_limit ? COLOR_WHITE : COLOR_BLACK;
   if (is_speedlim_valid) {
     if ((s->enable_osm == 1) || (s->scene.cruiseAccEnabled)) {
-      snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
-      ui_draw_text(s->vg, text_x, text_y+100, speedlim_str, 48*2.3, color, s->font_sans_bold);
+        if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
+          color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_RED : COLOR_GREEN;  
+        } else {
+          color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_OCHRE : COLOR_GREEN;  
+        }
+        snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
+        ui_draw_text(s->vg, text_x, text_y+100, speedlim_str, 48*2.3, color, s->font_sans_bold);
     } else {
       ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.3, color, s->font_sans_semibold);  
     }
