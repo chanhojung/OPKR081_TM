@@ -218,8 +218,8 @@ static void ui_draw_track(UIState *s, bool is_mpc, track_vertices_data *pvd) {
           blue_lvl = 255;
         }
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                  nvgRGBA(          red_lvl,  200,             blue_lvl, 255),
-                  nvgRGBA((int)(0.9*red_lvl), 200, (int)(0.9* blue_lvl), 150));                  
+                  nvgRGBA(          red_lvl,  180,             blue_lvl, 255),
+                  nvgRGBA((int)(0.9*red_lvl), 180, (int)(0.9* blue_lvl), 150));                  
     }
   } else {
     // Draw white vision track
