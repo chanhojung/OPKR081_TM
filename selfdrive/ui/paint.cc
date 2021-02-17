@@ -652,7 +652,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Border
   if (is_speedlim_valid) {
     ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h,
-                 s->is_ego_over_limit ? COLOR_RED : COLOR_WHITE, 20, 10);
+                 s->is_ego_over_limit ? COLOR_OCHRE : COLOR_WHITE, 20, 10);
   }
   float text_x = viz_speedlim_x + viz_speedlim_w / 2;
   float text_y = viz_speedlim_y + 65;
