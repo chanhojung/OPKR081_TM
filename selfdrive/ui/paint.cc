@@ -608,6 +608,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   char speedlim_str[32];
   float speedlimit = s->scene.speedlimit;
   int speedlim_calc = speedlimit * 2.2369363 + 0.5;
+  bool is_cruise_set = (maxspeed != 0 && maxspeed != SET_SPEED_NA);
   if (s->is_metric) {
     speedlim_calc = speedlimit * 3.6 + 0.5;
   }
@@ -648,6 +649,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
     } else if (is_speedlim_valid) {
         color = nvgRGBA(0, 160, 0, 200);
     }
+  }
   else {
     color = COLOR_WHITE_ALPHA(100);
   }
@@ -785,7 +787,6 @@ static void ui_draw_vision_event(UIState *s) {
       color = COLOR_OCHRE;
     } else {
       color = nvgRGBA(23, 51, 73, 255);
-    }
     }
 
     if (s->scene.limitSpeedCamera > 29) {
