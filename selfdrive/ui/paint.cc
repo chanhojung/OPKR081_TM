@@ -786,6 +786,7 @@ static void ui_draw_vision_event(UIState *s) {
     } else {
       color = nvgRGBA(23, 51, 73, 255);
     }
+    }
 
     if (s->scene.limitSpeedCamera > 29) {
       const int img_x_size = 172*1.4;
