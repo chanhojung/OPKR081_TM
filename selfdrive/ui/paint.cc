@@ -580,7 +580,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
   // Draw Background
   ui_draw_rect(s->vg, viz_maxspeed_x, viz_maxspeed_y, viz_maxspeed_w, viz_maxspeed_h,
-    is_set_over_limit ? nvgRGBA(218, 111, 37, 180) : COLOR_BLACK_ALPHA(100), 30);
+    is_set_over_limit ? nvgRGBA(218, 111, 37, scene->blinker_blinkingrate>=50?180:60) : COLOR_BLACK_ALPHA(100), 30);
 
   // Draw Border
   NVGcolor color = COLOR_WHITE_ALPHA(100);
@@ -648,9 +648,12 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   NVGcolor color = COLOR_WHITE_ALPHA(100);
   if (is_cruise_set && s->scene.controls_state.getEnabled()) {
     if (is_speedlim_valid && s->is_ego_over_limit) {
-        color = nvgRGBA(218, 111, 37, 180);
-    } else if (is_speedlim_valid) {
-        color = nvgRGBA(0, 160, 0, 200);
+        color = nvgRGBA(218, 111, 37, scene->blinker_blinkingrate>=50?180:60);
+    } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
+        color = nvgRGBA(0, 120, 0, scene->blinker_blinkingrate>=50?200:60);  
+    }
+    else {
+        color = nvgRGBA(0, 100, 200, 200);
     }
   }
   else {
