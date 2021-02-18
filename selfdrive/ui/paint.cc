@@ -642,10 +642,14 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   // Draw Background
   NVGcolor color = COLOR_WHITE_ALPHA(100);
-  if (is_speedlim_valid && s->is_ego_over_limit) {
-    color = nvgRGBA(218, 111, 37, 180);
-  } else if (is_speedlim_valid) {
-    color = nvgRGBA(0, 160, 0, 200);
+  if (is_cruise_set && s->scene.controls_state.getEnabled()) {
+    if (is_speedlim_valid && s->is_ego_over_limit) {
+        color = nvgRGBA(218, 111, 37, 180);
+    } else if (is_speedlim_valid) {
+        color = nvgRGBA(0, 160, 0, 200);
+    }
+  else {
+    color = COLOR_WHITE_ALPHA(100);
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
