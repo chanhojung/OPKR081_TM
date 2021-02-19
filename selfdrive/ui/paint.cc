@@ -699,15 +699,15 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   color = s->is_ego_over_limit ? COLOR_YELLOW : COLOR_WHITE;
   if (is_speedlim_valid) {
     if( scene->brakePress ) {
-      ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.3, color, s->font_sans_semibold);
+      ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_semibold);
     } else if ((s->enable_osm == 1) || (s->scene.cruiseAccEnabled)) {
       snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
-      ui_draw_text(s->vg, text_x, text_y+100, speedlim_str, 48*2.3, color, s->font_sans_bold);
+      ui_draw_text(s->vg, text_x, text_y+100, speedlim_str, 48*2.5, color, s->font_sans_bold);
     } else {
-      ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.3, color, s->font_sans_semibold);  
+      ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_semibold);  
     }
   } else {
-    ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.3, color, s->font_sans_semibold);
+    ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_semibold);
   }
 }
 
