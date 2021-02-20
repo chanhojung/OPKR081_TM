@@ -605,7 +605,6 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 }
 
 static void ui_draw_vision_speedlimit(UIState *s) {
-  const UIScene *scene = &s->scene;  
   float maxspeed = s->scene.controls_state.getVCruise();
   float speedlimit = s->scene.speedlimit;
   int speedlim_calc = speedlimit * 2.2369363 + 0.5;
@@ -647,7 +646,10 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   // Draw Background
   NVGcolor color = COLOR_WHITE_ALPHA(100);
-  if (is_cruise_set && s->scene.controls_state.getEnabled()) {
+  if (s->scene.vSetDis < 30.0) {
+    color = COLOR_WHITE_ALPHA(100);
+  } 
+  else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
     if (is_speedlim_valid && s->is_ego_over_limit) {
         color = COLOR_OCHRE_ALPHA(200);
     } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
@@ -662,17 +664,20 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
   // Draw Border
-  if (is_cruise_set && s->scene.controls_state.getEnabled()) {
+  if (s->scene.vSetDis < 30.0) {
+    color = COLOR_WHITE_ALPHA(100);
+  }   
+  else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
     if (is_speedlim_valid && s->is_ego_over_limit) {
         color = COLOR_OCHRE_ALPHA(50);
     } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
-        color = nvgRGBA(0, 120, 0, 50);  
+        color = nvgRGBA(0, 120, 0, 100);  
     } else {
-        color = nvgRGBA(0, 100, 200, 50);
+        color = nvgRGBA(0, 100, 200, 100);
     }
   }
   else {
-    color = COLOR_WHITE_ALPHA(20);
+    color = COLOR_WHITE_ALPHA(100);
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, 20, 10);
 
@@ -698,7 +703,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Speed Text
   color = s->is_ego_over_limit ? COLOR_YELLOW : COLOR_WHITE;
   if (is_speedlim_valid) {
-    if( scene->brakePress ) {
+    if(s->scene.vSetDis < 30.0) {
       ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_bold);
     } else if ((s->enable_osm == 1) || (s->scene.cruiseAccEnabled)) {
       snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
