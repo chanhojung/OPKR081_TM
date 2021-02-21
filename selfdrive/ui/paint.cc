@@ -604,6 +604,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 }
 
 static void ui_draw_vision_speedlimit(UIState *s) { 
+  const UIScene *scene = &s->scene;  
   float maxspeed = s->scene.controls_state.getVCruise();
   float speedlimit = s->scene.speedlimit;
   int speedlim_calc = speedlimit * 2.2369363 + 0.5;
@@ -645,8 +646,13 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   // Draw Background
   NVGcolor color = COLOR_WHITE_ALPHA(100);
+  if (scene->brakePress ) {
+    maxspeed = 0;
+    is_cruise_set = (maxspeed != 0 && maxspeed != SET_SPEED_NA);
+  }
+  
   if (is_cruise_set != true ) {
-    color = COLOR_WHITE_ALPHA(100);
+    color = COLOR_WHITE_ALPHA(200);
   } 
   else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
     if (is_speedlim_valid && s->is_ego_over_limit) {
@@ -658,11 +664,16 @@ static void ui_draw_vision_speedlimit(UIState *s) {
     }
   }
   else {
-    color = COLOR_WHITE_ALPHA(100);
+    color = COLOR_WHITE_ALPHA(200);
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
   // Draw Border
+  if (scene->brakePress ) {
+    maxspeed = 0;
+    is_cruise_set = (maxspeed != 0 && maxspeed != SET_SPEED_NA);
+  }
+
   if (is_cruise_set != true) {
     color = COLOR_WHITE_ALPHA(100);
   }   
