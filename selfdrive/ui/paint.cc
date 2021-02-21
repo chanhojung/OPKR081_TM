@@ -553,7 +553,6 @@ static void ui_draw_gear( UIState *s )
 }
 
 static void ui_draw_vision_maxspeed(UIState *s) {
-  const UIScene *scene = &s->scene;  
   char maxspeed_str[32];
   float maxspeed = s->scene.controls_state.getVCruise();
   int maxspeed_calc = maxspeed * 0.6225 + 0.5;
@@ -580,14 +579,14 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
   // Draw Background
   ui_draw_rect(s->vg, viz_maxspeed_x, viz_maxspeed_y, viz_maxspeed_w, viz_maxspeed_h,
-    is_set_over_limit ? nvgRGBA(218, 111, 37, scene->blinker_blinkingrate>=50?180:60) : COLOR_BLACK_ALPHA(100), 30);
+    is_set_over_limit ? COLOR_OCHRE_ALPHA(200) : COLOR_BLACK_ALPHA(100), 30);
 
   // Draw Border
   NVGcolor color = COLOR_WHITE_ALPHA(100);
   if (is_set_over_limit) {
     color = COLOR_OCHRE;
   } else if (is_speedlim_valid) {
-    color = s->is_ego_over_limit ? COLOR_WHITE_ALPHA(20) : COLOR_WHITE;
+    color = s->is_ego_over_limit ? COLOR_OCHRE_ALPHA(50) : COLOR_WHITE;
   }
   ui_draw_rect(s->vg, viz_maxspeed_x, viz_maxspeed_y, viz_maxspeed_w, viz_maxspeed_h, color, 20, 10);
 
@@ -604,7 +603,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   }
 }
 
-static void ui_draw_vision_speedlimit(UIState *s) {
+static void ui_draw_vision_speedlimit(UIState *s) { 
   float maxspeed = s->scene.controls_state.getVCruise();
   float speedlimit = s->scene.speedlimit;
   int speedlim_calc = speedlimit * 2.2369363 + 0.5;
@@ -646,7 +645,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   }
   // Draw Background
   NVGcolor color = COLOR_WHITE_ALPHA(100);
-  if (s->scene.vSetDis < 30.0) {
+  if (is_cruise_set != true ) {
     color = COLOR_WHITE_ALPHA(100);
   } 
   else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
@@ -664,7 +663,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
   // Draw Border
-  if (s->scene.vSetDis < 30.0) {
+  if (is_cruise_set != true) {
     color = COLOR_WHITE_ALPHA(100);
   }   
   else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
