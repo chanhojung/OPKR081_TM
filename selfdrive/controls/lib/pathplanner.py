@@ -87,14 +87,16 @@ class PathPlanner():
     self.lane_change_adjust_new = 0.0
 
     self.steerRatio_Max = int(Params().get('SteerRatioMaxAdj')) * 0.1
-    self.angle_range = [0, 60]
-    self.angle_differ_range = [0, 45]
-    self.steerRatio_range = [CP.steerRatio, self.steerRatio_Max] # 가변 SR값 범위 설정
+    #self.angle_range = [0, 60]
+    #self.angle_differ_range = [0, 45]
+    #self.steerRatio_range = [CP.steerRatio, self.steerRatio_Max] # 가변 SR값 범위 설정
+    self.steerRatio_range = [self.steerRatio_Max, 16.5, CP.steerRatio, 12.0] # 가변 SR값 범위 설정 by model_speed
     self.new_steerRatio = CP.steerRatio
     self.new_steerRatio_prev = CP.steerRatio
 
-    self.steer_actuator_delay_range = [0.1, CP.steerActuatorDelay]
-    self.steer_actuator_delay_vel = [3, 22]
+    self.model_speed_range = [30, 60, 255, 300]
+    self.steer_actuator_delay_range = [0.10, 0.15, CP.steerActuatorDelay, 0.3]
+    #self.steer_actuator_delay_vel = [3, 22]
     self.new_steer_actuator_delay = CP.steerActuatorDelay
 
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
@@ -117,7 +119,7 @@ class PathPlanner():
     self.angle_steers_des_prev = 0.0
     self.angle_steers_des_time = 0.0
 
-  def update(self, sm, pm, CP, VM):
+  def update(self, sm, pm, CP, VM, CS):
     v_ego = sm['carState'].vEgo
     angle_steers = sm['carState'].steeringAngle
     active = sm['controlsState'].active
@@ -137,18 +139,21 @@ class PathPlanner():
     elif lateral_control_method == 2:
       output_scale = sm['controlsState'].lateralControlState.lqrState.output
 
+    self.model_speed, self.model_sum = self.SC.calc_va(sm, CS.out.vEgo)
 
     # Run MPC
     self.angle_steers_des_prev = self.angle_steers_des_mpc
 
-    self.new_steer_actuator_delay = interp(v_ego, self.steer_actuator_delay_vel, self.steer_actuator_delay_range)
+    #self.new_steer_actuator_delay = interp(v_ego, self.steer_actuator_delay_vel, self.steer_actuator_delay_range)
+    self.new_steer_actuator_delay = interp(int(abs(self.model_speed)), self.model_speed_range, self.steer_actuator_delay_range)
 
     # 가변 SR
     if not self.live_sr:
       self.angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
       if abs(output_scale) >= 0.8 and v_ego > 8:
         #self.new_steerRatio_prev = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
-        self.new_steerRatio_prev = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
+        #self.new_steerRatio_prev = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
+        self.new_steerRatio_prev = interp(int(abs(self.model_speed)), self.model_speed_range, self.steerRatio_range)
         if self.new_steerRatio_prev > self.new_steerRatio:
           self.new_steerRatio = self.new_steerRatio_prev
       else:
@@ -164,7 +169,8 @@ class PathPlanner():
     if self.live_sr:
       sr = max(sm['liveParameters'].steerRatio, 12.5) #Live SR
     else:
-      self.new_steerRatio = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
+      #self.new_steerRatio = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
+      self.new_steerRatio = interp(int(abs(self.model_speed)), self.model_speed_range, self.steerRatio_range)
       sr = max(self.new_steerRatio, 12.5) #가변 SR
     VM.update_params(x, sr)
 
