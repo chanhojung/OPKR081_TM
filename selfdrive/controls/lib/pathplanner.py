@@ -7,6 +7,10 @@ from selfdrive.controls.lib.lateral_mpc import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LAT
 from selfdrive.controls.lib.lane_planner import LanePlanner
 from selfdrive.config import Conversions as CV
+
+from selfdrive.car.hyundai.spdctrl  import Spdctrl
+from selfdrive.car.hyundai.spdctrlRelaxed  import SpdctrlRelaxed
+
 from common.params import Params
 import cereal.messaging as messaging
 from cereal import car, log
@@ -102,6 +106,16 @@ class PathPlanner():
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
 
     self.standstill_elapsed_time = 0.0
+
+    if int(Params.get('OpkrVariableCruiseProfile')) == 0:
+      self.SC = Spdctrl()
+    elif int(Params.get('OpkrVariableCruiseProfile')) == 1:
+      self.SC = SpdctrlRelaxed()
+    else:
+      self.SC = Spdctrl()
+    
+    self.model_speed = 0
+    self.model_sum = 0
 
   def setup_mpc(self):
     self.libmpc = libmpc_py.libmpc
