@@ -107,9 +107,9 @@ class PathPlanner():
 
     self.standstill_elapsed_time = 0.0
 
-    if int(Params.get('OpkrVariableCruiseProfile')) == 0:
+    if int(Params().get('OpkrVariableCruiseProfile')) == 0:
       self.SC = Spdctrl()
-    elif int(Params.get('OpkrVariableCruiseProfile')) == 1:
+    elif int(Params().get('OpkrVariableCruiseProfile')) == 1:
       self.SC = SpdctrlRelaxed()
     else:
       self.SC = Spdctrl()
