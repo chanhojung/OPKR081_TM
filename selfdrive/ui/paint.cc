@@ -649,7 +649,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   if (scene->brakePress ) {
     color = nvgRGBA(180, 0, 0, 200);
   }
-  else if (s->scene.cruiseAccEnabled = false) {
+  else if (s->scene.cruiseAccEnabled == false) {
     color = COLOR_WHITE_ALPHA(200);
   }   
   else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
@@ -670,7 +670,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   if (scene->brakePress ) {
     color = nvgRGBA(180, 0, 0, 100);
   }
-  else if (s->scene.cruiseAccEnabled = false) {
+  else if (s->scene.cruiseAccEnabled == false) {
     color = COLOR_WHITE_ALPHA(100);
   }   
   else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
@@ -699,7 +699,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
   }
-  else if (s->scene.cruiseAccEnabled = false) {
+  else if (s->scene.cruiseAccEnabled == false) {
     color = COLOR_BLACK_ALPHA(200);
   }    
   else{
@@ -717,7 +717,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
   }
-  else if (s->scene.cruiseAccEnabled = false) {
+  else if (s->scene.cruiseAccEnabled == false) {
     color = COLOR_BLACK_ALPHA(200);
   }    
   else{
