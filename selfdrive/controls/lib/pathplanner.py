@@ -132,7 +132,7 @@ class PathPlanner():
     self.angle_steers_des_prev = 0.0
     self.angle_steers_des_time = 0.0
 
-  def update(self, sm, pm, CP, VM, CS):
+  def update(self, sm, pm, CP, VM):
     v_ego = sm['carState'].vEgo
     angle_steers = sm['carState'].steeringAngle
     active = sm['controlsState'].active
