@@ -648,7 +648,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   NVGcolor color = COLOR_WHITE_ALPHA(100);
   if (scene->brakePress ) {
     color = nvgRGBA(180, 0, 0, 200);
-  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false) {
       color = COLOR_WHITE_ALPHA(200);
   } else {
       if (is_speedlim_valid && s->is_ego_over_limit) {
@@ -664,7 +664,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Border
   if (scene->brakePress ) {
     color = nvgRGBA(180, 0, 0, 50);
-  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false) {
       color = COLOR_WHITE_ALPHA(80);
   } else {
     if (is_speedlim_valid && s->is_ego_over_limit) {
@@ -688,7 +688,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
-  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false) {
       color = COLOR_BLACK_ALPHA(200);
   } else {
     color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_YELLOW_ALPHA(200) : COLOR_WHITE_ALPHA(200);
@@ -704,13 +704,13 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Speed Text
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
-  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false) {
       color = COLOR_BLACK_ALPHA(200);
   } else {
     color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_YELLOW_ALPHA(200) : COLOR_WHITE_ALPHA(200);
   }  
   if (is_speedlim_valid) {
-    if(is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+    if(is_cruise_set == false && s->scene.controls_state.getEnabled() == false) {
       ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_bold);
     } else if ((s->enable_osm == 1) || (s->scene.cruiseAccEnabled)) {
       snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
