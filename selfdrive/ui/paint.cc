@@ -648,42 +648,32 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   NVGcolor color = COLOR_WHITE_ALPHA(100);
   if (scene->brakePress ) {
     color = nvgRGBA(180, 0, 0, 200);
-  }
-  else if (s->scene.cruiseAccEnabled == false) {
-    color = COLOR_WHITE_ALPHA(200);
-  }   
-  else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
-    if (is_speedlim_valid && s->is_ego_over_limit) {
-        color = COLOR_OCHRE_ALPHA(200);
-    } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
-        color = nvgRGBA(0, 120, 0, 200);  
-    } else {
-        color = nvgRGBA(0, 100, 200, 200);
-    }
-  }
-  else {
-    color = COLOR_WHITE_ALPHA(200);
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+      color = COLOR_WHITE_ALPHA(200);
+  } else {
+      if (is_speedlim_valid && s->is_ego_over_limit) {
+            color = COLOR_OCHRE_ALPHA(200);
+        } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
+            color = nvgRGBA(0, 120, 0, 200);  
+        } else {
+            color = nvgRGBA(0, 100, 200, 200);
+        }
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
   // Draw Border
   if (scene->brakePress ) {
-    color = nvgRGBA(180, 0, 0, 100);
-  }
-  else if (s->scene.cruiseAccEnabled == false) {
-    color = COLOR_WHITE_ALPHA(100);
-  }   
-  else if (is_cruise_set && s->scene.controls_state.getEnabled()) {
+    color = nvgRGBA(180, 0, 0, 50);
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+      color = COLOR_WHITE_ALPHA(80);
+  } else {
     if (is_speedlim_valid && s->is_ego_over_limit) {
         color = COLOR_OCHRE_ALPHA(50);
     } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
-        color = nvgRGBA(0, 120, 0, 100);  
+        color = nvgRGBA(0, 120, 0, 50);  
     } else {
-        color = nvgRGBA(0, 100, 200, 100);
+        color = nvgRGBA(0, 100, 200, 50);
     }
-  }
-  else {
-    color = COLOR_WHITE_ALPHA(100);
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, 20, 10);
 
@@ -698,12 +688,10 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
-  }
-  else if (s->scene.cruiseAccEnabled == false) {
-    color = COLOR_BLACK_ALPHA(200);
-  }    
-  else{
-    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_YELLOW : COLOR_WHITE;
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+      color = COLOR_BLACK_ALPHA(200);
+  } else {
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_YELLOW_ALPHA(200) : COLOR_WHITE_ALPHA(200);
   }  
   if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
     ui_draw_text(s->vg, text_x, text_y-20, "Limit", 24 * 2.0, color, s->font_sans_bold);
@@ -716,15 +704,13 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Speed Text
   if (scene->brakePress ) {
     color = COLOR_WHITE_ALPHA(200);
-  }
-  else if (s->scene.cruiseAccEnabled == false) {
-    color = COLOR_BLACK_ALPHA(200);
-  }    
-  else{
-    color = s->is_ego_over_limit ? COLOR_YELLOW : COLOR_WHITE;
-  }
+  } else if (is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
+      color = COLOR_BLACK_ALPHA(200);
+  } else {
+    color = is_speedlim_valid && s->is_ego_over_limit ? COLOR_YELLOW_ALPHA(200) : COLOR_WHITE_ALPHA(200);
+  }  
   if (is_speedlim_valid) {
-    if(s->scene.vSetDis < 30.0) {
+    if(is_cruise_set == false && s->scene.controls_state.getEnabled() == false || s->scene.cruiseAccEnabled == false) {
       ui_draw_text(s->vg, text_x, text_y+100, "-", 42*2.5, color, s->font_sans_bold);
     } else if ((s->enable_osm == 1) || (s->scene.cruiseAccEnabled)) {
       snprintf(speedlim_str, sizeof(speedlim_str), "%d", speedlim_calc);
