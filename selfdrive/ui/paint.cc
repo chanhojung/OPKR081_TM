@@ -1674,15 +1674,3 @@ void ui_nvg_init(UIState *s) {
     s->priv_hnds[i] = NULL;
   }
 }
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
