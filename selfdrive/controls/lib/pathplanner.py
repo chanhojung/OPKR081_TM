@@ -7,8 +7,6 @@ from selfdrive.controls.lib.lateral_mpc import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LAT
 from selfdrive.controls.lib.lane_planner import LanePlanner
 from selfdrive.config import Conversions as CV
-# from selfdrive.car.hyundai.spdctrl  import Spdctrl
-# from selfdrive.car.hyundai.spdctrlRelaxed  import SpdctrlRelaxed
 from common.params import Params
 import cereal.messaging as messaging
 from cereal import car, log
@@ -89,32 +87,18 @@ class PathPlanner():
     self.lane_change_adjust_new = 0.0
 
     self.steerRatio_Max = int(Params().get('SteerRatioMaxAdj')) * 0.1
-    self.angle_range = [0, 30, 60]
-    #self.angle_differ_range = [0, 45]
-    self.steerRatio_range = [CP.steerRatio, self.steerRatio_Max * 0.95, self.steerRatio_Max] # 가변 SR값 범위 설정
-    #self.steerRatio_range = [self.steerRatio_Max, 16.5, CP.steerRatio, 12.0] # 가변 SR값 범위 설정 by model_speed
+    self.angle_differ_range = [0, 45]
+    self.steerRatio_range = [CP.steerRatio, self.steerRatio_Max] # 가변 SR값 범위 설정
     self.new_steerRatio = CP.steerRatio
     self.new_steerRatio_prev = CP.steerRatio
 
-    #self.model_speed_range = [30, 60, 255, 300]
-    #self.steer_actuator_delay_range = [0.10, 0.15, CP.steerActuatorDelay, 0.3]
-    self.steer_actuator_delay_range = [0.30, CP.steerActuatorDelay, 0.15]
-    #self.steer_actuator_delay_vel = [3, 22]
+    self.steer_actuator_delay_range = [0.1, CP.steerActuatorDelay]
+    self.steer_actuator_delay_vel = [3, 13]
     self.new_steer_actuator_delay = CP.steerActuatorDelay
 
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
 
     self.standstill_elapsed_time = 0.0
-
-    # if int(Params().get('OpkrVariableCruiseProfile')) == 0:
-    #   self.SC = Spdctrl()
-    # elif int(Params().get('OpkrVariableCruiseProfile')) == 1:
-    #   self.SC = SpdctrlRelaxed()
-    # else:
-    #   self.SC = Spdctrl()
-    
-    # self.model_speed = 0
-    # self.model_sum = 0
 
   def setup_mpc(self):
     self.libmpc = libmpc_py.libmpc
@@ -152,22 +136,17 @@ class PathPlanner():
     elif lateral_control_method == 2:
       output_scale = sm['controlsState'].lateralControlState.lqrState.output
 
-    #self.model_speed, self.model_sum = self.SC.calc_va(sm, CS.out.vEgo)
 
     # Run MPC
     self.angle_steers_des_prev = self.angle_steers_des_mpc
 
-    #self.new_steer_actuator_delay = interp(v_ego, self.steer_actuator_delay_vel, self.steer_actuator_delay_range)
-    self.new_steer_actuator_delay = interp(abs(anglesteer_desire), self.angle_range, self.steer_actuator_delay_range)
-    #self.new_steer_actuator_delay = interp(int(abs(self.model_speed)), self.model_speed_range, self.steer_actuator_delay_range)
+    self.new_steer_actuator_delay = interp(v_ego, self.steer_actuator_delay_vel, self.steer_actuator_delay_range)
 
     # 가변 SR
     if not self.live_sr:
       self.angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
-      if abs(output_scale) >= 0.8 and v_ego > 8:
-        #self.new_steerRatio_prev = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
-        self.new_steerRatio_prev = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
-        #self.new_steerRatio_prev = interp(int(abs(self.model_speed)), self.model_speed_range, self.steerRatio_range)
+      if abs(output_scale) >= 1 and v_ego > 8:
+        self.new_steerRatio_prev = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
         if self.new_steerRatio_prev > self.new_steerRatio:
           self.new_steerRatio = self.new_steerRatio_prev
       else:
@@ -178,14 +157,12 @@ class PathPlanner():
             self.new_steerRatio = CP.steerRatio
           self.mpc_frame = 0
     # Update vehicle model
-    x = max(sm['liveParameters'].stiffnessFactor, 0.4)
+    x = max(sm['liveParameters'].stiffnessFactor, 0.1)
     
     if self.live_sr:
-      sr = max(sm['liveParameters'].steerRatio, 12.5) #Live SR
+      sr = max(sm['liveParameters'].steerRatio, 0.1) #Live SR
     else:
-      self.new_steerRatio = interp(abs(anglesteer_desire), self.angle_range, self.steerRatio_range)
-      #self.new_steerRatio = interp(int(abs(self.model_speed)), self.model_speed_range, self.steerRatio_range)
-      sr = max(self.new_steerRatio, 12.5) #가변 SR
+      sr = max(self.new_steerRatio, 0.1) #가변 SR
     VM.update_params(x, sr)
 
     curvature_factor = VM.curvature_factor(v_ego)
