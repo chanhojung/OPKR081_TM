@@ -652,7 +652,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
             color = COLOR_OCHRE_ALPHA(200);
         } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
             color = nvgRGBA(0, 120, 0, 200);  
-        } else {
+        } else if (s->scene.cruiseAccStatus){
             color = nvgRGBA(0, 100, 200, 200);
         }
   }
@@ -668,8 +668,10 @@ static void ui_draw_vision_speedlimit(UIState *s) {
         color = COLOR_OCHRE_ALPHA(50);
     } else if (s->enable_osm == 1 || s->scene.limitSpeedCamera > 29) {
         color = nvgRGBA(0, 120, 0, 50);  
-    } else {
+    } else if (s->scene.cruiseAccStatus){
         color = nvgRGBA(0, 100, 200, 50);
+    } else {
+        color = COLOR_WHITE_ALPHA(50);
     }
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, 20, 10);
