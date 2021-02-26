@@ -157,7 +157,9 @@ class PathPlanner():
             self.new_steerRatio = CP.steerRatio
           self.mpc_frame = 0
     # Update vehicle model
-    x = max(sm['liveParameters'].stiffnessFactor, 0.1)
+    #x = max(sm['liveParameters'].stiffnessFactor, 0.1)
+    tpmsPressureF = (sm['carState'].tpmsPressureFl + sm['carState'].tpmsPressureFr) / 2.
+    x = interp(v_ego, [10., 30.], [1.2, 1.0]) * interp(tpmsPressureF, [36., 43.], [0.7, 1.0])
     
     if self.live_sr:
       sr = max(sm['liveParameters'].steerRatio, 0.1) #Live SR
