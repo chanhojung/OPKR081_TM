@@ -638,11 +638,11 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Background
   NVGcolor color = COLOR_WHITE_ALPHA(100);
   if (scene->brakePress ) {
-    color = nvgRGBA(180, 0, 0, 200);
+    color = nvgRGBA(150, 0, 0, 200);
   } else if (is_speedlim_valid && s->is_ego_over_limit) {
     color = COLOR_OCHRE_ALPHA(200);
   } else if (s->scene.limitSpeedCamera > 29 && !s->is_ego_over_limit) {
-    color = nvgRGBA(0, 120, 0, 200);  
+    color = nvgRGBA(0, 100, 0, 200);  
   } else if (s->scene.cruiseAccStatus){
     color = nvgRGBA(0, 100, 200, 200);
   } else if (!s->scene.controls_state.getEnabled()) {
@@ -653,11 +653,11 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   // Draw Border
   color = COLOR_WHITE_ALPHA(50);
   if (scene->brakePress ) {
-    color = nvgRGBA(180, 0, 0, 50);
+    color = nvgRGBA(150, 0, 0, 50);
   } else if (is_speedlim_valid && s->is_ego_over_limit) {
     color = COLOR_OCHRE_ALPHA(50);
   } else if (s->scene.limitSpeedCamera > 29 && !s->is_ego_over_limit) {
-    color = nvgRGBA(0, 120, 0, 50);  
+    color = nvgRGBA(0, 100, 0, 50);  
   } else if (s->scene.cruiseAccStatus){
     color = nvgRGBA(0, 100, 200, 50);
   } else if (!s->scene.controls_state.getEnabled()) {
