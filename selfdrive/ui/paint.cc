@@ -200,6 +200,9 @@ static void update_track_data(UIState *s, const cereal::ModelDataV2::XYZTData::R
 
 static void ui_draw_track(UIState *s, bool is_mpc, track_vertices_data *pvd) {
   NVGpaint track_bg;
+  int torque_scale = 0;
+  int red_lvl = 0;
+  int blue_lvl = 0;  
   if (is_mpc) {
     // Draw colored MPC track Kegman's
     if (s->scene.steerOverride) {
@@ -643,7 +646,7 @@ static void ui_draw_vision_speedlimit(UIState *s) {
   } else if (s->scene.cruiseAccStatus){
     color = nvgRGBA(0, 100, 200, 200);
   } else if (!s->scene.controls_state.getEnabled()) {
-  	color = COLOR_WHITE_ALPHA(100);
+  	color = COLOR_WHITE_ALPHA(200);
   }
   ui_draw_rect(s->vg, viz_speedlim_x, viz_speedlim_y, viz_speedlim_w, viz_speedlim_h, color, is_speedlim_valid ? 30 : 15);
 
