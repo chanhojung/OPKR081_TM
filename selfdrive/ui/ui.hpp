@@ -37,15 +37,19 @@
 #define COLOR_OCHRE_ALPHA(x) nvgRGBA(218, 111, 37, x)
 #define COLOR_GREEN nvgRGBA(0, 255, 0, 255)
 #define COLOR_GREEN_ALPHA(x) nvgRGBA(0, 255, 0, x)
+#define COLOR_BLUE nvgRGBA(0, 0, 255, 255)
+#define COLOR_BLUE_ALPHA(x) nvgRGBA(0, 0, 255, x)
 #define COLOR_ORANGE nvgRGBA(255, 175, 3, 255)
 #define COLOR_ORANGE_ALPHA(x) nvgRGBA(255, 175, 3, x)
 #define COLOR_RED_ALPHA(x) nvgRGBA(201, 34, 49, x)
 #define COLOR_YELLOW_ALPHA(x) nvgRGBA(218, 202, 37, x)
+#define COLOR_GREY nvgRGBA(191, 191, 191, 1)
 #define UI_BUF_COUNT 4
 
 typedef struct Rect {
   int x, y, w, h;
   int centerX() const { return x + w / 2; }
+  int centerY() const { return y + h / 2; }
   int right() const { return x + w; }
   int bottom() const { return y + h; }
   bool ptInRect(int px, int py) const {
@@ -167,6 +171,7 @@ typedef struct UIScene {
   float radarDistance;
   bool standStill;
   float limitSpeedCamera;
+  float limitSpeedCameraDist;
   float v_ego;
   float vSetDis;
   bool cruiseAccEnabled;
@@ -261,7 +266,6 @@ typedef struct UIState {
   int img_battery_charging;
   int img_network[6];
   int img_map;
-  int img_safetycam;
   int img_speed;
   int img_speed_30;
   int img_speed_40;
